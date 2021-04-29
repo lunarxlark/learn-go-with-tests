@@ -10,8 +10,12 @@ func Area(rectangle Rectangle) float64 {
 	return (rectangle.Width * rectangle.Height)
 }
 
-func Area(circle Circle) float64 {
-	return math.Pi * circle.Radius * circle.Radius
+func (r Rectangle) Area() float64 {
+	return (r.Width * r.Height)
+}
+
+func (c Circle) Area() float64 {
+	return math.Pi * c.Radius * c.Radius
 }
 
 type Rectangle struct {
