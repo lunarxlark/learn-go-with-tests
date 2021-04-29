@@ -21,7 +21,11 @@ func SumAll(num2sum ...[]int) []int {
 func SumAllTails(num2sum ...[]int) []int {
 	sums := []int{}
 	for _, nums := range num2sum {
-		sums = append(sums, Sum(nums[1:]))
+		if len(nums) == 0 {
+			sums = append(sums, 0)
+		} else {
+			sums = append(sums, Sum(nums[1:]))
+		}
 	}
 	return sums
 }
