@@ -17,3 +17,7 @@ func SumAll(num2sum ...[]int) []int {
 	}
 	return sums
 }
+
+func SumAllTails(num2sum ...[]int) []int {
+	return nil
+}
