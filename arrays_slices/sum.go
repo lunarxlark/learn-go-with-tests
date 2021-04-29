@@ -19,5 +19,9 @@ func SumAll(num2sum ...[]int) []int {
 }
 
 func SumAllTails(num2sum ...[]int) []int {
-	return nil
+	sums := []int{}
+	for _, nums := range num2sum {
+		sums = append(sums, Sum(nums[1:]))
+	}
+	return sums
 }
