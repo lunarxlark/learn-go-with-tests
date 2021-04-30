@@ -33,25 +33,4 @@ func TestArea(t *testing.T) {
 		circle := Circle{1}
 		checkArea(t, circle, 3.141592653589793)
 	})
-
-	//t.Run("rectangle", func(t *testing.T) {
-	//	rectangle := Rectangle{12.0, 6.0}
-	//	got := rectangle.Area()
-	//	want := 72.0
-
-	//	if got != want {
-	//		t.Errorf("got %.2f want %.2f", got, want)
-	//	}
-	//})
-
-	//t.Run("circles", func(t *testing.T) {
-	//	circle := Circle{1}
-	//	got := circle.Area()
-	//	want := 3.141592
-
-	//	if got != want {
-	//		t.Errorf("got  %g, %f\n", got, got)
-	//		t.Errorf("want %g, %f\n", want, want)
-	//	}
-	//})
 }
