@@ -20,18 +20,29 @@ func TestSearch(t *testing.T) {
 }
 
 func TestAdd(t *testing.T) {
-	dictionary := Dictionary{}
-	dictionary.Add("test", "this is just a test")
+	// var m map[string]string <- be able to runtime panic
+	// var m = map[string]string{} better
+	// varm = make(map[string]string) better
 
-	want := "this is just a test"
-	got, err := dictionary.Search("test")
-	if err != nil {
-		t.Fatal("should find added word:", err)
-	}
+	t.Run("new  word", func(t *testing.T) {
+		dictionary := Dictionary{}
+		word := "test"
+		definition := "this is just a word"
 
-	if got != want {
-		t.Errorf("got %q want %q", got, want)
-	}
+		err := dictionary.Add(word, definition)
+		assertError(t, err, nil)
+		assertDefinition(t, dictionary, word, definition)
+	})
+
+	t.Run("existing  word", func(t *testing.T) {
+		word := "test"
+		definition := "this is just a word"
+		dictionary := Dictionary{word: definition}
+		err := dictionary.Add(word, "new test")
+
+		assertError(t, err, ErrWordExists)
+		assertDefinition(t, dictionary, word, definition)
+	})
 }
 
 func assertStrings(t *testing.T, got, want string) {
@@ -43,11 +54,14 @@ func assertStrings(t *testing.T, got, want string) {
 
 func assertError(t *testing.T, got, want error) {
 	t.Helper()
-	if got == nil {
-		t.Fatal("there is no error")
-	}
 	if got != want {
 		t.Errorf("got %q want %q", got, want)
+	}
+	if got == nil {
+		if want == nil {
+			return
+		}
+		t.Fatal("expecetd to get an error.")
 	}
 }
 
@@ -55,5 +69,17 @@ func assertNoError(t *testing.T, err error) {
 	t.Helper()
 	if err != nil {
 		t.Fatal("got an error but didn't want one")
+	}
+}
+
+func assertDefinition(t *testing.T, dic Dictionary, word, def string) {
+	t.Helper()
+
+	got, err := dic.Search(word)
+	if err != nil {
+		t.Fatal("should find added word:", err)
+	}
+	if def != got {
+		t.Errorf("got %q want %q", got, def)
 	}
 }

@@ -1,10 +1,6 @@
 package maps
 
-import "errors"
-
 type Dictionary map[string]string
-
-var ErrUnknownWord = errors.New("could not find the word you were looing for")
 
 func (d Dictionary) Search(word string) (string, error) {
 	if dic, found := d[word]; found {
@@ -15,10 +11,27 @@ func (d Dictionary) Search(word string) (string, error) {
 }
 
 func (d Dictionary) Add(word, definition string) error {
-	if _, found := d[word]; found {
-		return errors.New("word is already registered, definition %s")
-	} else {
+	_, err := d.Search(word)
+
+	switch err {
+	case ErrUnknownWord:
 		d[word] = definition
+	case nil:
+		return ErrWordExists
+	default:
+		return err
 	}
+
 	return nil
+}
+
+type DictionaryErr string
+
+const (
+	ErrUnknownWord = DictionaryErr("could not find the word you were looing for")
+	ErrWordExists  = DictionaryErr("word is already exists")
+)
+
+func (e DictionaryErr) Error() string {
+	return string(e)
 }
