@@ -35,3 +35,7 @@ const (
 func (e DictionaryErr) Error() string {
 	return string(e)
 }
+
+func (d *Dictionary) Update(word, definition string) error {
+	return nil
+}
