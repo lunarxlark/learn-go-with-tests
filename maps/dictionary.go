@@ -13,3 +13,12 @@ func (d Dictionary) Search(word string) (string, error) {
 		return "", ErrUnknownWord
 	}
 }
+
+func (d *Dictionary) Add(word, definition string) error {
+	if def, found := d[word]; found {
+		return errors.New("word is already registered, definition %s", def)
+	} else {
+		d[word] = definition
+	}
+	return nil
+}
