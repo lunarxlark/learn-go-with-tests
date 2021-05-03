@@ -14,7 +14,7 @@ func (d Dictionary) Search(word string) (string, error) {
 	}
 }
 
-func (d *Dictionary) Add(word, definition string) error {
+func (d Dictionary) Add(word, definition string) error {
 	if _, found := d[word]; found {
 		return errors.New("word is already registered, definition %s")
 	} else {
