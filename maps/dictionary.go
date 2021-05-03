@@ -28,14 +28,20 @@ func (d Dictionary) Add(word, definition string) error {
 type DictionaryErr string
 
 const (
-	ErrUnknownWord = DictionaryErr("could not find the word you were looing for")
-	ErrWordExists  = DictionaryErr("word is already exists")
+	ErrUnknownWord   = DictionaryErr("could not find the word you were looing for")
+	ErrWordExists    = DictionaryErr("word is already exists")
+	ErrWordNonExists = DictionaryErr("word didn't exists")
 )
 
 func (e DictionaryErr) Error() string {
 	return string(e)
 }
 
-func (d *Dictionary) Update(word, definition string) error {
+func (d Dictionary) Update(word, newDef string) error {
+	if _, found := d[word]; found {
+		d[word] = newDef
+	} else {
+		return ErrWordNonExists
+	}
 	return nil
 }
