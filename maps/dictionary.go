@@ -38,10 +38,14 @@ func (e DictionaryErr) Error() string {
 }
 
 func (d Dictionary) Update(word, newDef string) error {
-	if _, found := d[word]; found {
-		d[word] = newDef
-	} else {
+	_, err := d.Search(word)
+	switch err {
+	case ErrUnknownWord:
 		return ErrWordNonExists
+	case nil:
+		d[word] = newDef
+	default:
+		return err
 	}
 	return nil
 }
