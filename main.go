@@ -1,11 +1,11 @@
 package main
 
 import (
-	"net/http"
+	"os"
 
-	"github.com/lunarxlark/learn-go-with-tests/dependency_injection"
+	"github.com/lunarxlark/learn-go-with-tests/mocking"
 )
 
 func main() {
-	http.ListenAndServe(":5000", http.HandlerFunc(dependency_injection.MyGreeterHandler))
+	mocking.Countdown(os.Stdout)
 }
