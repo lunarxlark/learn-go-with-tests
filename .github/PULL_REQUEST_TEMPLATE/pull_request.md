@@ -1,6 +1,6 @@
 ---
 name: Pull Request
-abount: Create a pull request to review
+about: Create a pull request to review
 title: ''
 labels: ''
 assinees: ''
