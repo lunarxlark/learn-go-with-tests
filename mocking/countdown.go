@@ -9,6 +9,8 @@ import (
 const (
 	finalWord      = "Go!"
 	countdownStart = 3
+	write          = "write"
+	sleep          = "sleep"
 )
 
 type Sleeper interface {
@@ -29,11 +31,32 @@ func (s *SpySleeper) Sleep() {
 	s.Calls++
 }
 
-	for i := 3; i > 0; i-- {
+type CountdownOperationsSpy struct {
+	Calls []string
+}
+
+func (s *CountdownOperationsSpy) Sleep() {
+	s.Calls = append(s.Calls, sleep)
+}
+
+func (s *CountdownOperationsSpy) Write(p []byte) (n int, err error) {
+	s.Calls = append(s.Calls, write)
+	return
+}
+
 func Countdown(out io.Writer, sleeper Sleeper) {
+	//for i := countdownStart; i > 0; i-- {
+	//	sleeper.Sleep()
+	//}
+	//for i := countdownStart; i > 0; i-- {
+	//	fmt.Fprintln(out, i)
+	//}
+
+	for i := countdownStart; i > 0; i-- {
 		sleeper.Sleep()
-		fmt.Fprintf(writer, "%d\n", i)
+		fmt.Fprintln(out, i)
 	}
+
 	sleeper.Sleep()
-	fmt.Fprintf(writer, finalWord)
+	fmt.Fprint(out, finalWord)
 }
