@@ -45,13 +45,6 @@ func (s *CountdownOperationsSpy) Write(p []byte) (n int, err error) {
 }
 
 func Countdown(out io.Writer, sleeper Sleeper) {
-	//for i := countdownStart; i > 0; i-- {
-	//	sleeper.Sleep()
-	//}
-	//for i := countdownStart; i > 0; i-- {
-	//	fmt.Fprintln(out, i)
-	//}
-
 	for i := countdownStart; i > 0; i-- {
 		sleeper.Sleep()
 		fmt.Fprintln(out, i)
