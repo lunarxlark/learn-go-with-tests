@@ -3,8 +3,16 @@ package mocking
 import (
 	"fmt"
 	"io"
+	"time"
 )
 
+const finalWord = "Go!"
+
 func Countdown(writer io.Writer) {
-	fmt.Fprintf(writer, "3")
+	for i := 3; i > 0; i-- {
+		time.Sleep(1 * time.Second)
+		fmt.Fprintf(writer, "%d\n", i)
+	}
+	time.Sleep(1 * time.Second)
+	fmt.Fprintf(writer, finalWord)
 }
