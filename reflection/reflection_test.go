@@ -16,7 +16,6 @@ type Person struct {
 }
 
 func TestWalk(t *testing.T) {
-
 	cases := []struct {
 		Name          string
 		Input         interface{}
@@ -77,14 +76,6 @@ func TestWalk(t *testing.T) {
 			},
 			[]string{"London", "Tokyo"},
 		},
-		{
-			"map",
-			map[string]string{
-				"Foo": "foo",
-				"Bar": "bar",
-			},
-			[]string{"foo", "bar"},
-		},
 	}
 
 	for _, test := range cases {
@@ -97,5 +88,71 @@ func TestWalk(t *testing.T) {
 				t.Errorf("got %v, want %v", got, test.ExpectedCalls)
 			}
 		})
+	}
+
+	// Map
+	t.Run("map", func(t *testing.T) {
+		data := map[string]string{
+			"Foo": "foo",
+			"Bar": "bar",
+		}
+		var got []string
+		walk(data, func(input string) {
+			got = append(got, input)
+		})
+
+		assertContains(t, got, "foo")
+		assertContains(t, got, "bar")
+	})
+
+	// Channel
+	t.Run("chan", func(t *testing.T) {
+		dataChannel := make(chan Profile)
+
+		go func() {
+			dataChannel <- Profile{33, "Lunar"}
+			dataChannel <- Profile{34, "Lark"}
+			close(dataChannel)
+		}()
+
+		var got []string
+		want := []string{"Lunar", "Lark"}
+		walk(dataChannel, func(input string) {
+			got = append(got, input)
+		})
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v, want %v", got, want)
+		}
+	})
+
+	// Function
+	t.Run("function", func(t *testing.T) {
+		dataFunc := func() (Profile, Profile) {
+			return Profile{33, "Lunar"}, Profile{34, "Lark"}
+		}
+
+		var got []string
+		want := []string{"Lunar", "Lark"}
+		walk(dataFunc, func(input string) {
+			got = append(got, input)
+		})
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("expected %v, want %v", got, want)
+		}
+	})
+}
+
+func assertContains(t *testing.T, got []string, want string) {
+	t.Helper()
+	isContains := false
+	for _, x := range got {
+		if x == want {
+			isContains = true
+		}
+	}
+	if !isContains {
+		t.Errorf("expected %v to contain %q, but it didn't", got, want)
 	}
 }
